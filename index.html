@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Você é meu maior presente...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      background: black;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .mensagem {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #800000;
+      text-align: center;
+      width: 80%;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 1.2rem;
+      background: rgba(255,255,255,0.85);
+      border-radius: 20px;
+      padding: 20px;
+      z-index: 1;
+    }
+
+    .mensagem h1 {
+      margin-top: 0;
+      color: #d1005c;
+    }
+  </style>
+</head>
+<body>
+<canvas id="burnCanvas"></canvas>
+
+<div class="mensagem" id="texto" style="display:none;">
+  <h1>VOCÊ É MEU MAIOR PRESENTE...</h1>
+  <p>
+    O amor da minha vida é você — e disso eu não tenho dúvidas.<br><br>
+    Em você encontrei tudo aquilo que eu nem sabia que precisava. Tudo o que um dia pedi a Deus.<br><br>
+    Seu sorriso, seu jeito, sua inteligência... tudo em você me fascina e me faz perceber a sorte imensa que tenho por tê-la ao meu lado.<br><br>
+    Obrigado por existir, por fazer parte da minha vida e por me fazer a pessoa mais feliz do mundo, todos os dias.<br><br>
+    Juntos, vamos realizar todos os nossos sonhos, pois Deus está abençoando a nossa caminhada!
+  </p>
+</div>
+
+<audio autoplay loop>
+  <source src="musica.mp3" type="audio/mpeg">
+  Seu navegador não suporta áudio HTML5.
+</audio>
+
+<script>
+const canvas = document.getElementById('burnCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let radius = 0;
+let maxRadius = Math.min(canvas.width, canvas.height) * 0.45;
+let centerX = canvas.width / 2;
+let centerY = canvas.height / 2;
+
+function drawBurnEffect() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.save();
+  ctx.beginPath();
+  let r = radius;
+  let x = centerX;
+  let y = centerY;
+  ctx.moveTo(x, y);
+  ctx.bezierCurveTo(x, y - r / 2, x - r, y - r / 2, x - r, y);
+  ctx.bezierCurveTo(x - r, y + r, x, y + r * 1.5, x, y + r * 2);
+  ctx.bezierCurveTo(x, y + r * 1.5, x + r, y + r, x + r, y);
+  ctx.bezierCurveTo(x + r, y - r / 2, x, y - r / 2, x, y);
+  ctx.clip();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.restore();
+
+  if (radius < maxRadius) {
+    radius += 2;
+    requestAnimationFrame(drawBurnEffect);
+  } else {
+    document.getElementById("texto").style.display = "block";
+  }
+}
+
+drawBurnEffect();
+</script>
+</body>
+</html>
