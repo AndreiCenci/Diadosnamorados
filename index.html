@@ -9,42 +9,66 @@
     html, body {
       margin: 0;
       padding: 0;
-      overflow: hidden;
       width: 100%;
       height: 100%;
+      font-family: 'Segoe UI', sans-serif;
       background: black;
+      color: #800000;
     }
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
+
+    #capa {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: url('https://i.imgur.com/PhTDCgG.jpg') no-repeat center center;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 10;
     }
-    .mensagem {
+
+    #capa button {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      background-color: #d1005c;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #mensagem {
+      display: none;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: #800000;
-      text-align: center;
-      width: 80%;
-      font-family: 'Segoe UI', sans-serif;
-      font-size: 1.2rem;
-      background: rgba(255,255,255,0.85);
+      background: rgba(255,255,255,0.9);
+      padding: 30px;
       border-radius: 20px;
-      padding: 20px;
-      z-index: 1;
-      display: none;
+      max-width: 90%;
+      text-align: center;
     }
-    .mensagem h1 {
-      margin-top: 0;
+
+    #mensagem h1 {
       color: #d1005c;
+    }
+
+    #mensagem p {
+      font-size: 1.2rem;
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
-<canvas id="burnCanvas"></canvas>
 
-<div class="mensagem" id="texto">
+<div id="capa">
+  <button onclick="iniciar()">Clique aqui para abrir sua surpresa</button>
+</div>
+
+<div id="mensagem">
   <h1>VOCÊ É MEU MAIOR PRESENTE...</h1>
   <p>
     O amor da minha vida é você — e disso eu não tenho dúvidas.<br><br>
@@ -55,60 +79,22 @@
   </p>
 </div>
 
-<audio id="bgm" autoplay muted loop>
+<audio id="musica" loop>
   <source src="musica.mp3" type="audio/mpeg">
-  Seu navegador não suporta áudio HTML5.
+  Seu navegador não suporta áudio.
 </audio>
 
 <script>
-const canvas = document.getElementById('burnCanvas');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let radius = 0;
-let maxRadius = Math.min(canvas.width, canvas.height) * 0.45;
-let centerX = canvas.width / 2;
-let centerY = canvas.height / 2;
-
-function drawBurnEffect() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "black";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.save();
-  ctx.beginPath();
-  let r = radius;
-  let x = centerX;
-  let y = centerY;
-  ctx.moveTo(x, y);
-  ctx.bezierCurveTo(x, y - r / 2, x - r, y - r / 2, x - r, y);
-  ctx.bezierCurveTo(x - r, y + r, x, y + r * 1.5, x, y + r * 2);
-  ctx.bezierCurveTo(x, y + r * 1.5, x + r, y + r, x + r, y);
-  ctx.bezierCurveTo(x + r, y - r / 2, x, y - r / 2, x, y);
-  ctx.clip();
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.restore();
-
-  if (radius < maxRadius) {
-    radius += 2;
-    requestAnimationFrame(drawBurnEffect);
-  } else {
-    document.getElementById("texto").style.display = "block";
+  function iniciar() {
+    document.getElementById("capa").style.display = "none";
+    document.getElementById("mensagem").style.display = "block";
+    const audio = document.getElementById("musica");
+    audio.play().catch(() => {
+      // fallback se autoplay falhar
+      alert("Toque na tela para ativar a música.");
+    });
   }
-}
-
-// Iniciar animação após carregamento completo
-window.addEventListener("load", () => {
-  drawBurnEffect();
-
-  // Desmutar áudio após interação
-  document.body.addEventListener("click", () => {
-    const bgm = document.getElementById("bgm");
-    bgm.muted = false;
-    bgm.play();
-  }, { once: true });
-});
 </script>
+
 </body>
 </html>
