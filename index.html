@@ -1,103 +1,108 @@
-
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Você é meu maior presente...</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carta Especial</title>
   <style>
-    html, body {
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+    body {
       margin: 0;
       padding: 0;
       width: 100%;
-      height: 100%;
+      height: 100vh;
+      background: #f6f0e8 url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+      background-size: cover;
+      font-family: 'Great Vibes', cursive;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       overflow: hidden;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: black;
+      position: relative;
     }
-
-    #video-container {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      z-index: 10;
-    }
-
-    video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    #conteudo {
-      display: none;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(255,255,255,0.9);
-      padding: 30px;
-      border-radius: 20px;
-      max-width: 90%;
+    .carta {
+      max-width: 600px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       text-align: center;
+      font-size: 1.8em;
+      line-height: 1.7em;
+      color: #333;
+      opacity: 0;
+      animation: revelar 4s ease-out forwards;
       z-index: 1;
-      color: #800000;
     }
-
-    #conteudo h1 {
-      color: #d1005c;
+    @keyframes revelar {
+      0% {
+        clip-path: circle(0% at 50% 50%);
+        opacity: 0;
+      }
+      100% {
+        clip-path: circle(150% at 50% 50%);
+        opacity: 1;
+      }
     }
-
-    #conteudo p {
-      font-size: 1.2rem;
-      line-height: 1.6;
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      transform: rotate(45deg);
+      animation: fall 10s linear infinite;
     }
-
-    @media (max-width: 600px) {
-      #conteudo p {
-        font-size: 1rem;
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      border-radius: 50%;
+    }
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(110vh) rotate(45deg);
+        opacity: 0;
       }
     }
   </style>
 </head>
 <body>
-
-<div id="video-container">
-  <video id="introVideo" autoplay muted>
-    <source src="transicao.mp4" type="video/mp4">
-    Seu navegador não suporta vídeo.
-  </video>
-</div>
-
-<div id="conteudo">
-  <h1>VOCÊ É MEU MAIOR PRESENTE...</h1>
-  <p>
-    O amor da minha vida é você — e disso eu não tenho dúvidas.<br><br>
-    Em você encontrei tudo aquilo que eu nem sabia que precisava. Tudo o que um dia pedi a Deus.<br><br>
-    Seu sorriso, seu jeito, sua inteligência... tudo em você me fascina e me faz perceber a sorte imensa que tenho por tê-la ao meu lado.<br><br>
-    Obrigado por existir, por fazer parte da minha vida e por me fazer a pessoa mais feliz do mundo, todos os dias.<br><br>
-    Juntos, vamos realizar todos os nossos sonhos, pois Deus está abençoando a nossa caminhada!
-  </p>
-</div>
-
-<audio id="musica" loop>
-  <source src="musica.mp3" type="audio/mpeg">
-  Seu navegador não suporta áudio.
-</audio>
-
-<script>
-  const video = document.getElementById('introVideo');
-  const conteudo = document.getElementById('conteudo');
-  const audio = document.getElementById('musica');
-
-  video.addEventListener('ended', () => {
-    document.getElementById('video-container').style.display = 'none';
-    conteudo.style.display = 'block';
-    audio.play().catch(() => {
-      alert("Toque na tela para ativar a música.");
-    });
-  });
-</script>
-
+  <audio autoplay loop>
+    <source src="musica.mp3" type="audio/mpeg" />
+    Seu navegador não suporta áudio embutido.
+  </audio>
+  <div class="carta">
+    <p>Você é o meu maior presente...</p>
+    <p>O amor da minha vida é você, e não tenho dúvidas disso. Em você encontrei tudo que nem sabia que precisava, tudo que um dia pedi a Deus. Seu sorriso, seu jeito, sua inteligência, tudo em você me fascina e me faz perceber a sorte que tenho em tê-la ao meu lado.</p>
+    <p>Obrigado por existir, por fazer parte da minha vida e por me fazer a pessoa mais feliz do mundo todos os dias. Juntos vamos realizar todos os nossos sonhos, pois, Deus está abençoando nossa caminhada!</p>
+  </div>
+  <script>
+    function criarCoracoes() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = Math.random() * 5 + 5 + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => {
+        heart.remove();
+      }, 10000);
+    }
+    setInterval(criarCoracoes, 300);
+  </script>
 </body>
 </html>
