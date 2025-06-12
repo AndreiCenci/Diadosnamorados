@@ -14,13 +14,11 @@
       height: 100%;
       background: black;
     }
-
     canvas {
       position: absolute;
       top: 0;
       left: 0;
     }
-
     .mensagem {
       position: absolute;
       top: 50%;
@@ -35,8 +33,8 @@
       border-radius: 20px;
       padding: 20px;
       z-index: 1;
+      display: none;
     }
-
     .mensagem h1 {
       margin-top: 0;
       color: #d1005c;
@@ -46,7 +44,7 @@
 <body>
 <canvas id="burnCanvas"></canvas>
 
-<div class="mensagem" id="texto" style="display:none;">
+<div class="mensagem" id="texto">
   <h1>VOCÊ É MEU MAIOR PRESENTE...</h1>
   <p>
     O amor da minha vida é você — e disso eu não tenho dúvidas.<br><br>
@@ -57,7 +55,7 @@
   </p>
 </div>
 
-<audio autoplay loop>
+<audio id="bgm" autoplay muted loop>
   <source src="musica.mp3" type="audio/mpeg">
   Seu navegador não suporta áudio HTML5.
 </audio>
@@ -100,7 +98,17 @@ function drawBurnEffect() {
   }
 }
 
-drawBurnEffect();
+// Iniciar animação após carregamento completo
+window.addEventListener("load", () => {
+  drawBurnEffect();
+
+  // Desmutar áudio após interação
+  document.body.addEventListener("click", () => {
+    const bgm = document.getElementById("bgm");
+    bgm.muted = false;
+    bgm.play();
+  }, { once: true });
+});
 </script>
 </body>
 </html>
